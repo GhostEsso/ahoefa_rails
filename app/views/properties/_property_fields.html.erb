@@ -1,0 +1,23 @@
+<%= turbo_frame_tag "property_fields" do %>
+  <div class="sm:col-span-2 grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div>
+      <%= f.label :bedrooms, "Nombre de chambres", 
+          class: "block text-sm font-medium #{property.property_type == 'land' ? 'text-gray-400' : 'text-gray-700'}" %>
+      <%= f.number_field :bedrooms, 
+          min: 0, 
+          value: property.property_type == 'land' ? 0 : property.bedrooms,
+          disabled: property.property_type == 'land',
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 #{property.property_type == 'land' ? 'bg-gray-100 cursor-not-allowed' : ''}" %>
+    </div>
+
+    <div>
+      <%= f.label :bathrooms, "Nombre de salles de bain", 
+          class: "block text-sm font-medium #{property.property_type == 'land' ? 'text-gray-400' : 'text-gray-700'}" %>
+      <%= f.number_field :bathrooms, 
+          min: 0, 
+          value: property.property_type == 'land' ? 0 : property.bathrooms,
+          disabled: property.property_type == 'land',
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 #{property.property_type == 'land' ? 'bg-gray-100 cursor-not-allowed' : ''}" %>
+    </div>
+  </div>
+<% end %> 

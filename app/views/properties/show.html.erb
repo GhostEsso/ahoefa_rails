@@ -1,0 +1,319 @@
+<div class="bg-gray-50 min-h-screen py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- En-tête -->
+    <div class="mb-8">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+          <li>
+            <div>
+              <%= link_to root_path, class: "text-gray-400 hover:text-gray-500" do %>
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+              <% end %>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <%= link_to "Propriétés", properties_path, class: "ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" %>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+              </svg>
+              <span class="ml-4 text-sm font-medium text-gray-500" aria-current="page">
+                <%= @property.title %>
+              </span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+      <!-- Section des photos -->
+      <div class="relative">
+        <!-- Image principale -->
+        <div id="main-image" class="relative h-96 overflow-hidden rounded-lg">
+          <% if @property.photos.attached? %>
+            <%= image_tag @property.photos.first, class: "w-full h-full object-cover", id: "current-image" %>
+            
+            <!-- Boutons de navigation -->
+            <button onclick="previousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button onclick="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <!-- Indicateur de position -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full">
+              <span id="current-position">1</span>/<span id="total-images"><%= @property.photos.count %></span>
+            </div>
+          <% else %>
+            <%= image_tag "default_property.jpg", class: "w-full h-full object-cover" %>
+          <% end %>
+        </div>
+
+        <!-- Miniatures -->
+        <% if @property.photos.attached? && @property.photos.count > 1 %>
+          <div class="mt-4 grid grid-cols-6 gap-2">
+            <% @property.photos.each_with_index do |photo, index| %>
+              <%= image_tag photo, 
+                  class: "h-24 w-full object-cover rounded cursor-pointer hover:opacity-75 transition-opacity duration-150",
+                  data: { index: index },
+                  onclick: "showImage(#{index})" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Informations principales -->
+      <div class="p-8">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900"><%= @property.title %></h1>
+            <p class="mt-2 text-lg text-gray-500"><%= @property.city %></p>
+          </div>
+          <div class="text-right">
+            <p class="text-3xl font-bold text-indigo-600">
+              <%= number_to_currency(@property.price, unit: "FCFA", precision: 0, delimiter: " ") %>
+              <% if @property.transaction_type == 'rent' %>
+                <span class="text-base font-normal text-gray-500">/mois</span>
+              <% end %>
+            </p>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 mt-2">
+              <%= t("property.types.#{@property.property_type}") %>
+            </span>
+          </div>
+        </div>
+
+        <!-- Caractéristiques -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="flex items-center">
+            <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span class="ml-2 text-gray-600"><%= pluralize(@property.bedrooms, 'chambre') %></span>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+            <span class="ml-2 text-gray-600"><%= pluralize(@property.bathrooms, 'salle de bain') %></span>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+            </svg>
+            <span class="ml-2 text-gray-600"><%= number_with_precision(@property.surface, precision: 0) %> m²</span>
+          </div>
+          <div class="flex items-center">
+            <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="ml-2 text-gray-600"><%= @property.address %></span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold text-gray-900">Description</h2>
+          <p class="mt-4 text-gray-600 whitespace-pre-line"><%= @property.description %></p>
+        </div>
+
+        <!-- Agent -->
+        <div class="mt-8 border-t border-gray-200 pt-8">
+          <h2 class="text-xl font-semibold text-gray-900">Agent immobilier</h2>
+          <div class="mt-4 flex items-center">
+            <div class="flex-shrink-0">
+              <div class="h-12 w-12 rounded-full bg-indigo-600 flex items-center justify-center">
+                <span class="text-white font-semibold text-lg">
+                  <%= @property.user.first_name[0] %><%= @property.user.last_name[0] %>
+                </span>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-medium text-gray-900">
+                <%= @property.user.first_name %> <%= @property.user.last_name %>
+              </h3>
+              <div class="mt-1">
+                <% case @property.user.plan %>
+                <% when 'premium' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                    <svg class="mr-1.5 h-2 w-2 text-indigo-400" fill="currentColor" viewBox="0 0 8 8">
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Agent Premium
+                    <svg class="ml-1 h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </span>
+                <% when 'standard' %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <svg class="mr-1.5 h-2 w-2 text-blue-400" fill="currentColor" viewBox="0 0 8 8">
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Agent Standard
+                    <svg class="ml-1 h-4 w-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                <% else %>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    <svg class="mr-1.5 h-2 w-2 text-gray-400" fill="currentColor" viewBox="0 0 8 8">
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Agent Basic
+                  </span>
+                <% end %>
+              </div>
+              <div class="mt-2 flex items-center space-x-4">
+                <% if @property.user.plan == 'basic' %>
+                  <!-- Afficher les coordonnées de l'admin pour les agents basic -->
+                  <a href="tel:<%= AdminContact.phone %>" class="inline-flex items-center text-indigo-600 hover:text-indigo-500">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <%= AdminContact.phone %>
+                  </a>
+                  <a href="mailto:<%= AdminContact.email %>" class="inline-flex items-center text-indigo-600 hover:text-indigo-500">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <%= AdminContact.email %>
+                  </a>
+                <% else %>
+                  <!-- Afficher les coordonnées de l'agent pour les plans standard et premium -->
+                  <a href="tel:<%= @property.user.phone_number %>" class="inline-flex items-center text-indigo-600 hover:text-indigo-500">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <%= @property.user.phone_number %>
+                  </a>
+                  <a href="mailto:<%= @property.user.email %>" class="inline-flex items-center text-indigo-600 hover:text-indigo-500">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Contacter par email
+                  </a>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Propriétés similaires -->
+    <% if @similar_properties.any? %>
+      <div class="mt-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Propriétés similaires à <%= @property.city %></h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <% @similar_properties.each do |property| %>
+            <%= link_to property_path(property), class: "block" do %>
+              <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <!-- Image -->
+                <div class="relative h-48">
+                  <% if property.photos.attached? && property.photos.first.present? %>
+                    <%= image_tag property.photos.first, class: "w-full h-full object-cover" %>
+                  <% else %>
+                    <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span class="text-gray-400">Pas de photo</span>
+                    </div>
+                  <% end %>
+                  <div class="absolute top-2 right-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                      <%= t("property.types.#{property.property_type}") %>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Informations -->
+                <div class="p-4">
+                  <h3 class="text-lg font-semibold text-gray-900 truncate"><%= property.title %></h3>
+                  <p class="mt-1 text-gray-500 truncate"><%= property.city %></p>
+                  <p class="mt-2 text-lg font-bold text-indigo-600">
+                    <%= number_to_currency(property.price, unit: "FCFA", precision: 0, delimiter: " ") %>
+                    <% if property.transaction_type == 'rent' %>
+                      <span class="text-sm font-normal text-gray-500">/mois</span>
+                    <% end %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  // Stockage des URLs des images
+  const images = [
+    <% if @property.photos.attached? %>
+      <% @property.photos.each do |photo| %>
+        "<%= url_for(photo) %>",
+      <% end %>
+    <% end %>
+  ];
+  
+  let currentIndex = 0;
+  const totalImages = images.length;
+
+  function showImage(index) {
+    if (index < 0) index = totalImages - 1;
+    if (index >= totalImages) index = 0;
+    
+    currentIndex = index;
+    const mainImage = document.getElementById('current-image');
+    mainImage.src = images[currentIndex];
+    
+    // Mise à jour de l'indicateur de position
+    document.getElementById('current-position').textContent = currentIndex + 1;
+    
+    // Mise à jour des miniatures (optionnel)
+    const thumbnails = document.querySelectorAll('[data-index]');
+    thumbnails.forEach(thumb => {
+      if (parseInt(thumb.dataset.index) === currentIndex) {
+        thumb.classList.add('ring-2', 'ring-indigo-500');
+      } else {
+        thumb.classList.remove('ring-2', 'ring-indigo-500');
+      }
+    });
+  }
+
+  function nextImage() {
+    showImage(currentIndex + 1);
+  }
+
+  function previousImage() {
+    showImage(currentIndex - 1);
+  }
+
+  // Gestion des touches clavier
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') {
+      previousImage();
+    } else if (e.key === 'ArrowRight') {
+      nextImage();
+    }
+  });
+
+  // Initialisation
+  if (images.length > 0) {
+    showImage(0);
+  }
+</script> 

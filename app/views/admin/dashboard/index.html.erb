@@ -1,0 +1,251 @@
+<% content_for :title do %>
+  Tableau de bord
+<% end %>
+
+<div class="min-h-screen bg-gray-50">
+  <!-- En-tête -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Cartes de statistiques principales -->
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <!-- Total Agents -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg transition-all duration-200 hover:shadow-md">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 p-3 bg-indigo-50 rounded-lg">
+              <%= image_tag "agent.png", class: "h-6 w-6" %>
+            </div>
+            <div class="ml-5">
+              <p class="text-sm font-medium text-gray-500">Total Agents</p>
+              <p class="text-2xl font-semibold text-gray-900"><%= @total_agents %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agents Actifs -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg transition-all duration-200 hover:shadow-md">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 p-3 bg-green-50 rounded-lg">
+              <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="ml-5">
+              <p class="text-sm font-medium text-gray-500">Agents Actifs</p>
+              <p class="text-2xl font-semibold text-gray-900"><%= @active_agents %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Propriétés -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg transition-all duration-200 hover:shadow-md">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 p-3 bg-blue-50 rounded-lg">
+              <%= image_tag "property.png", class: "h-6 w-6" %>
+            </div>
+            <div class="ml-5">
+              <p class="text-sm font-medium text-gray-500">Total Propriétés</p>
+              <p class="text-2xl font-semibold text-gray-900"><%= @total_properties %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Utilisateurs -->
+      <div class="bg-white overflow-hidden shadow-sm rounded-lg transition-all duration-200 hover:shadow-md">
+        <div class="p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 p-3 bg-purple-50 rounded-lg">
+              <%= image_tag "users.png", class: "h-6 w-6" %>
+            </div>
+            <div class="ml-5">
+              <p class="text-sm font-medium text-gray-500">Total Utilisateurs</p>
+              <p class="text-2xl font-semibold text-gray-900"><%= @total_users %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recettes des abonnements -->
+    <div class="mt-8">
+      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Recettes des abonnements</h3>
+        </div>
+        <div class="px-6 py-5">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <!-- Basic -->
+            <div class="bg-gray-50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
+                  <h4 class="ml-2 text-sm font-medium text-gray-900">Basic</h4>
+                </div>
+                <span class="text-xs font-semibold text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
+                  <%= @basic_agents %> agents
+                </span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= number_to_currency(@basic_agents * 5000, unit: "FCFA", precision: 0, delimiter: " ") %>
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                <%= number_to_currency(5000, unit: "FCFA", precision: 0, delimiter: " ") %> / agent
+              </p>
+            </div>
+
+            <!-- Standard -->
+            <div class="bg-gray-50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <h4 class="ml-2 text-sm font-medium text-gray-900">Standard</h4>
+                </div>
+                <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                  <%= @standard_agents %> agents
+                </span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= number_to_currency(@standard_agents * 10000, unit: "FCFA", precision: 0, delimiter: " ") %>
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                <%= number_to_currency(10000, unit: "FCFA", precision: 0, delimiter: " ") %> / agent
+              </p>
+            </div>
+
+            <!-- Premium -->
+            <div class="bg-gray-50 rounded-lg p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                  <div class="w-3 h-3 bg-indigo-500 rounded-full"></div>
+                  <h4 class="ml-2 text-sm font-medium text-gray-900">Premium</h4>
+                </div>
+                <span class="text-xs font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full">
+                  <%= @premium_agents %> agents
+                </span>
+              </div>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= number_to_currency(@premium_agents * 20000, unit: "FCFA", precision: 0, delimiter: " ") %>
+              </p>
+              <p class="text-sm text-gray-500 mt-1">
+                <%= number_to_currency(20000, unit: "FCFA", precision: 0, delimiter: " ") %> / agent
+              </p>
+            </div>
+          </div>
+
+          <!-- Total des recettes -->
+          <div class="mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg p-6 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-medium opacity-90">Total des recettes mensuelles</h4>
+                <p class="text-3xl font-bold mt-1">
+                  <%= number_to_currency(
+                    (@basic_agents * 5000) + (@standard_agents * 10000) + (@premium_agents * 20000),
+                    unit: "FCFA",
+                    precision: 0,
+                    delimiter: " "
+                  ) %>
+                </p>
+              </div>
+              <div class="text-right">
+                <p class="text-sm opacity-90">Nombre total d'agents</p>
+                <p class="text-2xl font-bold mt-1"><%= @total_agents %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <!-- Agents par plan -->
+      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Distribution des agents</h3>
+        </div>
+        <div class="p-6">
+          <div class="space-y-4">
+            <% @agents_by_plan.each do |plan, count| %>
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center">
+                    <div class="w-2.5 h-2.5 rounded-full <%= plan == 'premium' ? 'bg-indigo-500' : (plan == 'standard' ? 'bg-blue-500' : 'bg-gray-400') %>"></div>
+                    <span class="ml-2 text-sm font-medium text-gray-900"><%= plan.capitalize %></span>
+                  </div>
+                  <span class="text-sm font-semibold text-gray-900"><%= count %></span>
+                </div>
+                <div class="relative w-full bg-gray-200 rounded-full h-2">
+                  <div class="absolute top-0 left-0 h-2 rounded-full <%= plan == 'premium' ? 'bg-indigo-500' : (plan == 'standard' ? 'bg-blue-500' : 'bg-gray-400') %>"
+                       style="width: <%= (count.to_f / @total_agents * 100).round %>%"></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propriétés par type -->
+      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Types de propriétés</h3>
+        </div>
+        <div class="p-6">
+          <div class="space-y-4">
+            <% @properties_by_type.each do |type, count| %>
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-gray-900"><%= t("property.types.#{type}") %></span>
+                  <span class="text-sm font-semibold text-gray-900"><%= count %></span>
+                </div>
+                <div class="relative w-full bg-gray-200 rounded-full h-2">
+                  <div class="absolute top-0 left-0 h-2 rounded-full bg-indigo-500"
+                       style="width: <%= (count.to_f / @total_properties * 100).round %>%"></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Propriétés par ville -->
+    <div class="mt-8">
+      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Distribution géographique</h3>
+        </div>
+        <div class="p-6">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <% @properties_by_city.each do |city, count| %>
+              <div class="bg-gray-50 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-medium text-gray-900"><%= city %></span>
+                  <span class="text-xs font-semibold text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full">
+                    <%= count %> propriétés
+                  </span>
+                </div>
+                <div class="relative w-full bg-gray-200 rounded-full h-2">
+                  <div class="absolute top-0 left-0 h-2 rounded-full bg-indigo-500"
+                       style="width: <%= (count.to_f / @total_properties * 100).round %>%"></div>
+                </div>
+                <p class="mt-2 text-xs text-gray-500">
+                  <%= ((count.to_f / @total_properties) * 100).round(1) %>% du total
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div> 

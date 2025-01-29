@@ -1,0 +1,128 @@
+<% content_for :title do %>
+  Gestion des agents
+<% end %>
+
+<div class="bg-white shadow rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-xl font-semibold text-gray-900">Agents</h2>
+        <p class="mt-2 text-sm text-gray-700">Liste de tous les agents immobiliers inscrits sur la plateforme.</p>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">Agent</th>
+                <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Plan</th>
+                <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Propriétés</th>
+                <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Statut</th>
+                <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Inscrit le</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% @agents.each do |agent| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                    <div class="flex items-center">
+                      <div class="h-10 w-10 flex-shrink-0">
+                        <div class="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center">
+                          <span class="text-white font-semibold">
+                            <%= agent.first_name[0] %><%= agent.last_name[0] %>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="ml-4">
+                        <div class="font-medium text-gray-900"><%= agent.full_name %></div>
+                        <div class="text-gray-500"><%= agent.email %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case agent.plan
+                          when 'premium' then 'bg-indigo-100 text-indigo-800'
+                          when 'standard' then 'bg-blue-100 text-blue-800'
+                          else 'bg-gray-100 text-gray-800'
+                          end %>">
+                      <%= agent.plan.capitalize %>
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= agent.properties.count %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm">
+                    <% if agent.blocked? %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        Bloqué jusqu'au <%= l agent.blocked_until, format: :short %>
+                      </span>
+                    <% else %>
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Actif
+                      </span>
+                    <% end %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= l agent.created_at, format: :short %>
+                  </td>
+                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 md:pr-0">
+                    <div class="flex justify-end space-x-3">
+                      <%= link_to admin_agent_path(agent), class: "text-indigo-600 hover:text-indigo-900" do %>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      <% end %>
+
+                      <% if agent.blocked? %>
+                        <%= button_to unblock_admin_agent_path(agent), method: :patch, class: "text-green-600 hover:text-green-900" do %>
+                          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                          </svg>
+                        <% end %>
+                      <% else %>
+                        <div class="relative" data-controller="dropdown">
+                          <button type="button" data-action="dropdown#toggle" class="text-yellow-600 hover:text-yellow-900">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </button>
+                          <div data-dropdown-target="menu" class="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <%= button_to block_admin_agent_path(agent, duration: 1), method: :patch, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
+                              Bloquer 1 jour
+                            <% end %>
+                            <%= button_to block_admin_agent_path(agent, duration: 7), method: :patch, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
+                              Bloquer 7 jours
+                            <% end %>
+                            <%= button_to block_admin_agent_path(agent, duration: 30), method: :patch, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" do %>
+                              Bloquer 30 jours
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+
+                      <%= button_to admin_agent_path(agent), method: :delete, 
+                          data: { confirm: "Êtes-vous sûr de vouloir supprimer cet agent ?" },
+                          class: "text-red-600 hover:text-red-900" do %>
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

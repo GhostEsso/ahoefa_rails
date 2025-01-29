@@ -1,0 +1,129 @@
+<div class="bg-gray-50 min-h-screen py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+        Mes annonces
+      </h1>
+      <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+        Gérez vos annonces immobilières
+      </p>
+
+      <div class="mt-8">
+        <%= link_to new_property_path, 
+            class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700" do %>
+          <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Créer une annonce
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Grille des propriétés -->
+    <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <% @properties.each do |property| %>
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
+          <!-- Image principale - hauteur fixe -->
+          <div class="relative h-64 flex-shrink-0">
+            <% if property.photos.attached? && property.photos.first.present? %>
+              <%= image_tag property.photos.first, 
+                  class: "w-full h-full object-cover",
+                  alt: property.title %>
+            <% else %>
+              <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                <span class="text-gray-400">Pas de photo</span>
+              </div>
+            <% end %>
+            <div class="absolute top-0 right-0 p-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                <%= t("property.types.#{property.property_type}") %>
+              </span>
+            </div>
+            <div class="absolute top-0 left-0 p-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= property.transaction_type == 'sale' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' %>">
+                <%= t("property.transaction_types.#{property.transaction_type}") %>
+              </span>
+            </div>
+          </div>
+
+          <!-- Informations de la propriété - hauteur flexible -->
+          <div class="p-6 flex-grow flex flex-col">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="text-xl font-semibold text-gray-900 line-clamp-2 flex-grow">
+                <%= property.title %>
+              </h3>
+              <p class="text-2xl font-bold text-indigo-600 flex-shrink-0 ml-4">
+                <%= number_to_currency(property.price, unit: "FCFA", precision: 0, delimiter: " ") %>
+                <% if property.transaction_type == 'rent' %>
+                  <span class="text-sm font-normal text-gray-500">/mois</span>
+                <% end %>
+              </p>
+            </div>
+
+            <p class="text-gray-500 line-clamp-2 mb-4 flex-grow">
+              <%= property.description %>
+            </p>
+
+            <!-- Caractéristiques et actions -->
+            <div class="mt-auto">
+              <div class="flex items-center text-gray-500 text-sm mb-4">
+                <svg class="h-5 w-5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="truncate"><%= property.city %></span>
+              </div>
+
+              <div class="border-t pt-4 space-y-4">
+                <!-- Caractéristiques -->
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  <div class="flex space-x-4">
+                    <div class="flex items-center">
+                      <svg class="h-5 w-5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                      </svg>
+                      <%= pluralize(property.bedrooms, 'chambre') %>
+                    </div>
+                    <div class="flex items-center">
+                      <svg class="h-5 w-5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <%= pluralize(property.bathrooms, 'sdb') %>
+                    </div>
+                    <div class="flex items-center">
+                      <svg class="h-5 w-5 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                      <%= number_with_precision(property.surface, precision: 0) %> m²
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end space-x-4">
+                  <%= link_to edit_property_path(property), 
+                      class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                    <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Modifier
+                  <% end %>
+
+                  <%= button_to property_path(property), 
+                      method: :delete,
+                      class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
+                      data: { confirm: "Êtes-vous sûr de vouloir supprimer cette annonce ?" } do %>
+                    <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Supprimer
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 

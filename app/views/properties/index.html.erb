@@ -1,0 +1,87 @@
+<div class="bg-gray-50 min-h-screen py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+        Nos propriétés
+      </h1>
+      <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+        Découvrez notre sélection de propriétés au Togo
+      </p>
+
+      <!-- Barre de recherche -->
+      <div class="mt-8 max-w-xl mx-auto">
+        <%= form_with url: properties_path, method: :get, 
+            class: "relative",
+            data: { 
+              controller: "search",
+              turbo_frame: "properties",
+              turbo_action: "advance"
+            } do |f| %>
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <%= f.text_field :query,
+              value: params[:query],
+              class: "block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+              placeholder: "Rechercher une propriété par titre, ville, type...",
+              autocomplete: 'off',
+              data: {
+                search_target: "form",
+                action: "input->search#search"
+              } %>
+        <% end %>
+      </div>
+
+      <% if user_signed_in? && current_user.role == 'agent' %>
+        <div class="mt-8">
+          <%= link_to new_property_path, 
+              class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700" do %>
+            <svg class="-ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Créer une annonce
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Liste des propriétés -->
+    <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <% @properties.each do |property| %>
+        <%= render 'property_card', property: property %>
+      <% end %>
+    </div>
+
+    <!-- Pagination -->
+    <% if @properties.total_pages > 1 %>
+      <div class="mt-12">
+        <nav class="flex justify-center">
+          <div class="flex rounded-md shadow-sm">
+            <%= link_to_prev_page @properties, "Précédent", class: "relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+
+            <div class="hidden md:flex">
+              <% @properties.total_pages.times do |i| %>
+                <% if i + 1 == @properties.current_page %>
+                  <span class="relative inline-flex items-center px-4 py-2 border border-indigo-500 bg-indigo-50 text-sm font-medium text-indigo-600">
+                    <%= i + 1 %>
+                  </span>
+                <% else %>
+                  <%= link_to i + 1, properties_path(
+                    page: i + 1,
+                    transaction_type: params[:transaction_type],
+                    property_type: params[:property_type],
+                    city: params[:city]
+                  ), class: "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+                <% end %>
+              <% end %>
+            </div>
+
+            <%= link_to_next_page @properties, "Suivant", class: "relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+          </div>
+        </nav>
+      </div>
+    <% end %>
+  </div>
+</div> 

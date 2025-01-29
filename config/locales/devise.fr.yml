@@ -1,0 +1,32 @@
+fr:
+  devise:
+    confirmations:
+      confirmed: "Votre compte a été validé."
+    failure:
+      already_authenticated: "Vous êtes déjà connecté."
+      invalid: "Email ou mot de passe incorrect."
+      not_found_in_database: "Email ou mot de passe incorrect."
+      timeout: "Votre session a expiré, veuillez vous reconnecter."
+      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Déconnexion réussie."
+      already_signed_out: "Déconnexion réussie."
+    registrations:
+      signed_up: "Bienvenue ! Vous vous êtes bien enregistré."
+      updated: "Votre compte a été modifié avec succès."
+      destroyed: "Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt."
+    passwords:
+      no_token: "Vous ne pouvez pas accéder à cette page sans passer par un email de réinitialisation de mot de passe."
+      send_instructions: "Vous allez recevoir un email avec les instructions pour réinitialiser votre mot de passe."
+      updated: "Votre mot de passe a été modifié avec succès."
+    unlocks:
+      send_instructions: "Vous allez recevoir un email avec les instructions pour déverrouiller votre compte."
+      unlocked: "Votre compte a été déverrouillé avec succès."
+    mailer:
+      confirmation_instructions:
+        subject: "Instructions de confirmation"
+      reset_password_instructions:
+        subject: "Instructions pour réinitialiser votre mot de passe"
+      unlock_instructions:
+        subject: "Instructions pour déverrouiller votre compte" 

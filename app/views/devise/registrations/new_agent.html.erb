@@ -1,0 +1,124 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Devenir agent immobilier
+      </h2>
+      
+      <!-- Affichage du plan sélectionné -->
+      <div class="mt-4 bg-indigo-50 p-6 rounded-lg">
+        <h3 class="text-lg font-medium text-indigo-800">Plan <%= params[:plan]&.capitalize %></h3>
+        <div id="price-display" class="mt-2 text-indigo-600 text-lg font-semibold">
+          <%= number_to_currency(@selected_price, unit: "FCFA", precision: 0, delimiter: " ") %> / mois
+        </div>
+      </div>
+
+      <p class="mt-4 text-center text-sm text-gray-600">
+        Ou
+        <%= link_to "se connecter", new_session_path(resource_name), class: "font-medium text-indigo-600 hover:text-indigo-500" %>
+      </p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <%= f.hidden_field :role, value: 'agent' %>
+      <%= f.hidden_field :plan, value: params[:plan] %>
+      <%= f.hidden_field :price, value: @selected_price, data: { price: @selected_price } %>
+
+      <!-- Option de paiement annuel -->
+      <div class="bg-white shadow rounded-lg p-6 mb-6">
+        <div class="flex items-center space-x-3">
+          <%= f.check_box :annual, 
+              class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500",
+              id: "annual-checkbox" %>
+          <%= f.label :annual, "Paiement annuel (-3%)", class: "text-sm font-medium text-gray-700" %>
+        </div>
+      </div>
+
+      <!-- Informations personnelles -->
+      <div class="bg-white shadow rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-6">Informations personnelles</h3>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <%= f.label :first_name, "Prénom", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.text_field :first_name, autofocus: true,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :last_name, "Nom", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.text_field :last_name,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :phone_number, "Téléphone", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.telephone_field :phone_number,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.email_field :email,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :password, "Mot de passe", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.password_field :password,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+
+          <div>
+            <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "block text-sm font-medium text-gray-700" %>
+            <%= f.password_field :password_confirmation,
+                class: "mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <%= f.submit "Devenir agent immobilier",
+            class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const annualCheckbox = document.getElementById('annual-checkbox');
+  const priceDisplay = document.getElementById('price-display');
+  const priceInput = document.querySelector('input[name="user[price]"]');
+  const monthlyPrice = parseInt(priceInput.dataset.price);
+  const ANNUAL_DISCOUNT = 0.03; // 3% de réduction
+
+  function formatPrice(amount) {
+    return new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'XOF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount).replace('XOF', 'FCFA');
+  }
+
+  function updatePriceDisplay() {
+    if (annualCheckbox.checked) {
+      // Prix annuel avec réduction de 3%
+      const annualPrice = monthlyPrice * 12 * (1 - ANNUAL_DISCOUNT);
+      priceDisplay.textContent = `${formatPrice(annualPrice)} / an (économie de ${formatPrice(monthlyPrice * 12 * ANNUAL_DISCOUNT)})`;
+      priceInput.value = annualPrice;
+    } else {
+      // Prix mensuel normal
+      priceDisplay.textContent = `${formatPrice(monthlyPrice)} / mois`;
+      priceInput.value = monthlyPrice;
+    }
+  }
+
+  annualCheckbox.addEventListener('change', updatePriceDisplay);
+  
+  // Initialisation
+  updatePriceDisplay();
+});
+</script> 

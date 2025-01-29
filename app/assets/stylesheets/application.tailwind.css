@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Styles pour le carousel */
+.property-carousel-slide {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.property-carousel-slide.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.property-carousel-slide:not(.hidden) {
+  opacity: 1;
+}
+
+/* Vos styles personnalisés ici */ 

@@ -1,0 +1,109 @@
+fr:
+  time:
+    formats:
+      short: "%d/%m/%Y %H:%M"
+      long: "%A %d %B %Y %H:%M"
+  date:
+    formats:
+      short: "%d/%m/%Y"
+      long: "%A %d %B %Y"
+    day_names: [dimanche, lundi, mardi, mercredi, jeudi, vendredi, samedi]
+    abbr_day_names: [dim, lun, mar, mer, jeu, ven, sam]
+    month_names: [~, janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre]
+    abbr_month_names: [~, jan., fév., mar., avr., mai, juin, juil., août, sept., oct., nov., déc.]
+    order:
+      - :day
+      - :month
+      - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: "environ une heure"
+        other: "environ %{count} heures"
+      about_x_months:
+        one: "environ un mois"
+        other: "environ %{count} mois"
+      about_x_years:
+        one: "environ un an"
+        other: "environ %{count} ans"
+      almost_x_years:
+        one: "presqu'un an"
+        other: "presque %{count} ans"
+      half_a_minute: "une demi-minute"
+      less_than_x_minutes:
+        one: "moins d'une minute"
+        other: "moins de %{count} minutes"
+      less_than_x_seconds:
+        one: "moins d'une seconde"
+        other: "moins de %{count} secondes"
+      over_x_years:
+        one: "plus d'un an"
+        other: "plus de %{count} ans"
+      x_days:
+        one: "1 jour"
+        other: "%{count} jours"
+      x_minutes:
+        one: "1 minute"
+        other: "%{count} minutes"
+      x_months:
+        one: "1 mois"
+        other: "%{count} mois"
+      x_years:
+        one: "1 an"
+        other: "%{count} ans"
+      x_seconds:
+        one: "1 seconde"
+        other: "%{count} secondes"
+  activerecord:
+    errors:
+      models:
+        property:
+          attributes:
+            title:
+              blank: "Le titre ne peut pas être vide"
+            description:
+              blank: "La description ne peut pas être vide"
+            price:
+              blank: "Le prix ne peut pas être vide"
+              not_a_number: "Le prix doit être un nombre"
+            address:
+              blank: "L'adresse ne peut pas être vide"
+            city:
+              blank: "La ville ne peut pas être vide"
+            property_type:
+              blank: "Le type de propriété doit être sélectionné"
+              inclusion: "Le type de propriété n'est pas valide"
+            transaction_type:
+              blank: "Le type de transaction doit être sélectionné"
+              inclusion: "Le type de transaction n'est pas valide"
+            surface:
+              blank: "La surface ne peut pas être vide"
+              not_a_number: "La surface doit être un nombre"
+              greater_than: "La surface doit être supérieure à 0"
+            bedrooms:
+              not_a_number: "Le nombre de chambres doit être un nombre"
+              greater_than_or_equal_to: "Le nombre de chambres ne peut pas être négatif"
+            bathrooms:
+              not_a_number: "Le nombre de salles de bain doit être un nombre"
+              greater_than_or_equal_to: "Le nombre de salles de bain ne peut pas être négatif"
+    attributes:
+      property:
+        title: "Titre"
+        description: "Description"
+        price: "Prix"
+        address: "Adresse"
+        city: "Ville"
+        property_type: "Type de propriété"
+        transaction_type: "Type de transaction"
+        surface: "Surface"
+        bedrooms: "Chambres"
+        bathrooms: "Salles de bain"
+  property:
+    types:
+      house: "Maison"
+      apartment: "Appartement"
+      land: "Terrain"
+      office: "Bureau"
+    transaction_types:
+      sale: "Vente"
+      rent: "Location" 
