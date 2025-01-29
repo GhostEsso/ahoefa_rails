@@ -19,7 +19,7 @@ class Property < ApplicationRecord
   end
 
   def land?
-    property_type == 'land'
+    property_type == "land"
   end
 
   private
@@ -28,11 +28,11 @@ class Property < ApplicationRecord
     return unless photos.attached?
 
     photos_limit = case user.plan
-                  when 'basic' then 2
-                  when 'standard' then 5
-                  when 'premium' then 15
-                  else 0
-                  end
+    when "basic" then 2
+    when "standard" then 5
+    when "premium" then 15
+    else 0
+    end
 
     if photos.count > photos_limit
       errors.add(:photos, "ne peut pas dépasser #{photos_limit} photos pour votre plan")

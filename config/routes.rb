@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   get "pages/home"
   devise_for :users, controllers: {
-    registrations: 'registrations',
-    sessions: 'sessions'
+    registrations: "registrations",
+    sessions: "sessions"
   }
 
   devise_scope :user do
-    get '/users/sign_up/agent', to: 'registrations#new_agent', as: :new_agent_registration
+    get "/users/sign_up/agent", to: "registrations#new_agent", as: :new_agent_registration
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -20,22 +20,22 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root 'pages#home'
+  root "pages#home"
 
-  resources :properties, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+  resources :properties, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
     collection do
-      get 'mes-annonces', to: 'properties#my_properties', as: :my
+      get "mes-annonces", to: "properties#my_properties", as: :my
     end
   end
-  resources :agents, only: [:index, :show]
-  get 'devenir-agent', to: 'subscriptions#index', as: :subscriptions
-  post 'devenir-agent/select-plan', to: 'subscriptions#select_plan', as: :select_plan_subscriptions
+  resources :agents, only: [ :index, :show ]
+  get "devenir-agent", to: "subscriptions#index", as: :subscriptions
+  post "devenir-agent/select-plan", to: "subscriptions#select_plan", as: :select_plan_subscriptions
 
   # Namespace admin
   namespace :admin do
-    root to: 'dashboard#index'
-    get 'dashboard', to: 'dashboard#index'
-    
+    root to: "dashboard#index"
+    get "dashboard", to: "dashboard#index"
+
     resources :agents do
       member do
         patch :block
@@ -43,4 +43,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Route pour la modification du profil
+  get "profile/edit", to: "profiles#edit", as: :edit_profile
+  patch "profile/update", to: "profiles#update", as: :update_profile
 end

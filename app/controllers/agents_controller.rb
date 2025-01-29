@@ -2,11 +2,11 @@ class AgentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @agents = User.where(role: 'agent')
+    @agents = User.where(role: "agent")
                   .where(blocked: false)
                   .includes(:properties)
                   .order(created_at: :desc)
-    
+
     # Filtrer par plan si un filtre est spécifié
     if params[:filter].present?
       @agents = @agents.where(plan: params[:filter])
@@ -19,9 +19,9 @@ class AgentsController < ApplicationController
   def show
     @agent = User.find(params[:id])
     redirect_to root_path, alert: "Cet agent n'est plus disponible." if @agent.blocked?
-    
+
     @properties = @agent.properties
                        .with_attached_photos
                        .order(created_at: :desc)
   end
-end 
+end

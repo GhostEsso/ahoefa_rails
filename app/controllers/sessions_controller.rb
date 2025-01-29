@@ -6,4 +6,4 @@ class SessionsController < Devise::SessionsController
       Rails.logger.debug "Est admin?: #{user.admin?}"
     end
   end
-end 
+end

@@ -1,6 +1,6 @@
 module Admin
   class AgentsController < BaseController
-    before_action :set_agent, only: [:show, :block, :unblock, :destroy]
+    before_action :set_agent, only: [ :show, :block, :unblock, :destroy ]
 
     def index
       @agents = User.agent.order(created_at: :desc)
@@ -41,4 +41,4 @@ module Admin
       @agent = User.agent.find(params[:id])
     end
   end
-end 
+end

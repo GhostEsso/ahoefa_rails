@@ -52,10 +52,10 @@ agents = [
 created_agents = agents.map { |agent_data| User.create!(agent_data) }
 
 # Liste des villes
-cities = ['Lomé', 'Kara', 'Sokodé', 'Kpalimé', 'Atakpamé', 'Bassar', 'Tsévié', 'Aného']
+cities = [ 'Lomé', 'Kara', 'Sokodé', 'Kpalimé', 'Atakpamé', 'Bassar', 'Tsévié', 'Aného' ]
 
 # Types de propriétés
-property_types = ['house', 'apartment', 'land', 'office']
+property_types = [ 'house', 'apartment', 'land', 'office' ]
 
 # Photos de démonstration
 demo_photos = [
@@ -79,7 +79,7 @@ created_agents.each do |agent|
       address: "#{rand(1..999)} Rue #{('A'..'Z').to_a.sample}",
       city: cities.sample,
       property_type: property_types.sample,
-      transaction_type: ['sale', 'rent'].sample,
+      transaction_type: [ 'sale', 'rent' ].sample,
       bedrooms: rand(1..5),
       bathrooms: rand(1..3),
       surface: rand(50..500)
@@ -87,10 +87,10 @@ created_agents.each do |agent|
 
     # Ajout des photos (entre 1 et 3 selon le plan)
     max_photos = case agent.plan
-                when 'basic' then 2
-                when 'standard' then 5
-                when 'premium' then 15
-                end
+    when 'basic' then 2
+    when 'standard' then 5
+    when 'premium' then 15
+    end
 
     num_photos = rand(1..3) # Pour la démo, on met entre 1 et 3 photos
     num_photos.times do |j|

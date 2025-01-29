@@ -16,8 +16,8 @@ class User < ApplicationRecord
   # Scopes
   scope :active, -> { where(blocked_until: nil) }
   scope :blocked, -> { where("blocked_until > ?", Time.current) }
-  scope :agent, -> { where(role: 'agent') }
-  scope :admin, -> { where(role: 'admin') }
+  scope :agent, -> { where(role: "agent") }
+  scope :admin, -> { where(role: "admin") }
 
   def blocked?
     blocked_until.present? && blocked_until > Time.current
@@ -28,11 +28,11 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == 'admin'
+    role == "admin"
   end
 
   def agent?
-    role == 'agent'
+    role == "agent"
   end
 
   def block!(duration)

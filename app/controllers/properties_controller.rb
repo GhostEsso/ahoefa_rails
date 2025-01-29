@@ -1,8 +1,8 @@
 class PropertiesController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_agent!, except: [:index, :show]
-  before_action :set_property, only: [:show, :edit, :update, :destroy]
-  before_action :ensure_property_owner!, only: [:edit, :update, :destroy]
+  before_action :ensure_agent!, except: [ :index, :show ]
+  before_action :set_property, only: [ :show, :edit, :update, :destroy ]
+  before_action :ensure_property_owner!, only: [ :edit, :update, :destroy ]
 
   def index
     @properties = Property.includes(:user)
@@ -56,7 +56,7 @@ class PropertiesController < ApplicationController
 
   def create
     @property = current_user.properties.build(property_params)
-    
+
     # Mettre à zéro les chambres et salles de bain pour les terrains
     if @property.land?
       @property.bedrooms = 0
@@ -67,7 +67,7 @@ class PropertiesController < ApplicationController
       if params[:property][:photos].present?
         @property.photos.attach(params[:property][:photos])
       end
-      redirect_to my_properties_path, notice: 'Annonce créée avec succès.'
+      redirect_to my_properties_path, notice: "Annonce créée avec succès."
     else
       render :new, status: :unprocessable_entity
     end
@@ -78,7 +78,7 @@ class PropertiesController < ApplicationController
 
   def update
     # Mettre à zéro les chambres et salles de bain pour les terrains
-    if property_params[:property_type] == 'land'
+    if property_params[:property_type] == "land"
       params[:property][:bedrooms] = 0
       params[:property][:bathrooms] = 0
     end
@@ -87,7 +87,7 @@ class PropertiesController < ApplicationController
       if params[:property][:photos].present?
         @property.photos.attach(params[:property][:photos])
       end
-      redirect_to my_properties_path, notice: 'Annonce mise à jour avec succès.'
+      redirect_to my_properties_path, notice: "Annonce mise à jour avec succès."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -95,7 +95,7 @@ class PropertiesController < ApplicationController
 
   def destroy
     @property.destroy
-    redirect_to my_properties_path, notice: 'Annonce supprimée avec succès.'
+    redirect_to my_properties_path, notice: "Annonce supprimée avec succès."
   end
 
   private
@@ -113,14 +113,14 @@ class PropertiesController < ApplicationController
   end
 
   def ensure_agent!
-    unless current_user&.role == 'agent'
-      redirect_to root_path, alert: 'Accès réservé aux agents immobiliers.'
+    unless current_user&.role == "agent"
+      redirect_to root_path, alert: "Accès réservé aux agents immobiliers."
     end
   end
 
   def ensure_property_owner!
     unless @property.user == current_user
-      redirect_to root_path, alert: 'Vous ne pouvez pas modifier cette annonce.'
+      redirect_to root_path, alert: "Vous ne pouvez pas modifier cette annonce."
     end
   end
-end 
+end

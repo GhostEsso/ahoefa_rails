@@ -20,18 +20,18 @@ gem "tailwindcss-rails"
 gem "jbuilder"
 
 # Authentification et autorisation
-gem 'devise'
-gem 'pundit'
+gem "devise"
+gem "pundit"
 
 # Formulaires et UI
-gem 'simple_form'
+gem "simple_form"
 
 # API
-gem 'rack-cors'
-gem 'jwt'
+gem "rack-cors"
+gem "jwt"
 
 # Image processing
-gem 'image_processing', '~> 1.2'
+gem "image_processing", "~> 1.2"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
@@ -54,7 +54,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # Pagination
-gem 'kaminari'
+gem "kaminari"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -66,10 +66,10 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails'
-  gem 'factory_bot_rails'
-  gem 'faker'
-  gem 'pry-rails'
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "pry-rails"
 end
 
 group :development do
