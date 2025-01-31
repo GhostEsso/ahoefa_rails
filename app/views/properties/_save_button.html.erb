@@ -1,0 +1,23 @@
+<% if user_signed_in? %>
+  <div id="save_button_<%= property.id %>">
+    <% if current_user.saved_properties.exists?(property: property) %>
+      <%= button_to property_unsave_path(property), 
+          method: :delete,
+          class: "inline-flex items-center",
+          form: { data: { controller: "turbo-stream" } } do %>
+        <svg class="h-6 w-6 text-gray-900 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M5 4c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v18l-7-4-7 4V4z"/>
+        </svg>
+      <% end %>
+    <% else %>
+      <%= button_to property_save_path(property), 
+          method: :post,
+          class: "inline-flex items-center",
+          form: { data: { controller: "turbo-stream" } } do %>
+        <svg class="h-6 w-6 text-gray-400 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M5 4c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v18l-7-4-7 4V4z"/>
+        </svg>
+      <% end %>
+    <% end %>
+  </div>
+<% end %> 

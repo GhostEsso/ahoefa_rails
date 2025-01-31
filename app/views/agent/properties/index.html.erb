@@ -1,0 +1,70 @@
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Mes propriétés</h1>
+    <%= link_to new_agent_property_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700" do %>
+      <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Ajouter une propriété
+    <% end %>
+  </div>
+
+  <% if @properties.any? %>
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <ul role="list" class="divide-y divide-gray-200">
+        <% @properties.each do |property| %>
+          <li>
+            <div class="px-4 py-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <% if property.photos.attached? %>
+                    <%= image_tag property.photos.first, class: "h-16 w-16 object-cover rounded-lg" %>
+                  <% else %>
+                    <div class="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                  <% end %>
+                  <div class="ml-4">
+                    <h2 class="text-lg font-medium text-gray-900"><%= property.title %></h2>
+                    <p class="text-sm text-gray-500"><%= property.address %></p>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <%= link_to agent_property_path(property), class: "text-indigo-600 hover:text-indigo-900" do %>
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  <% end %>
+                  <%= link_to edit_agent_property_path(property), class: "text-indigo-600 hover:text-indigo-900" do %>
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  <% end %>
+                  <%= button_to agent_property_path(property), method: :delete, class: "text-red-600 hover:text-red-900",
+                      data: { confirm: "Êtes-vous sûr de vouloir supprimer cette propriété ?" } do %>
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% else %>
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Aucune propriété</h3>
+        <div class="mt-2 max-w-xl text-sm text-gray-500">
+          <p>Vous n'avez pas encore ajouté de propriété. Commencez par en ajouter une !</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div> 

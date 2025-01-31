@@ -1,0 +1,56 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">
+        Mes annonces sauvegardées
+      </h1>
+      <p class="mt-2 text-sm text-gray-500">
+        Retrouvez ici toutes les annonces que vous avez sauvegardées
+      </p>
+    </div>
+
+    <% if @saved_properties.any? %>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @saved_properties.each do |property| %>
+          <%= render "properties/property_card", property: property %>
+        <% end %>
+      </div>
+
+      <!-- Pagination -->
+      <% if @saved_properties.total_pages > 1 %>
+        <div class="mt-12">
+          <nav class="flex justify-center">
+            <div class="flex rounded-md shadow-sm">
+              <%= link_to_prev_page @saved_properties, "Précédent", class: "relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+
+              <div class="hidden md:flex">
+                <% @saved_properties.total_pages.times do |i| %>
+                  <% if i + 1 == @saved_properties.current_page %>
+                    <span class="relative inline-flex items-center px-4 py-2 border border-indigo-500 bg-indigo-50 text-sm font-medium text-indigo-600">
+                      <%= i + 1 %>
+                    </span>
+                  <% else %>
+                    <%= link_to i + 1, saved_properties_path(page: i + 1), class: "relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <%= link_to_next_page @saved_properties, "Suivant", class: "relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50" %>
+            </div>
+          </nav>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Aucune annonce sauvegardée</h3>
+        <p class="mt-1 text-sm text-gray-500">
+          Commencez à sauvegarder des annonces pour les retrouver ici.
+        </p>
+        <%= link_to "Parcourir les annonces", properties_path, class: "mt-6 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" %>
+      </div>
+    <% end %>
+  </div>
+</div> 

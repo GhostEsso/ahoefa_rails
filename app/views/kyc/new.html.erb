@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow px-6 py-8">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Vérification KYC</h1>
+        <p class="mt-2 text-sm text-gray-500">
+          Pour activer votre compte agent, veuillez soumettre les documents suivants pour vérification.
+        </p>
+      </div>
+
+      <%= form_with(model: current_user, url: kyc_path, method: :post, class: "space-y-6") do |f| %>
+        <% if current_user.errors.any? %>
+          <div class="bg-red-50 p-4 rounded-md">
+            <div class="text-sm text-red-700">
+              <% current_user.errors.full_messages.each do |message| %>
+                <p><%= message %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Photo de profil (format passeport)</label>
+          <div class="mt-2">
+            <%= f.file_field :avatar, 
+                accept: 'image/*',
+                class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">
+            Une photo de type passeport récente de vous-même. La photo doit être claire, sur fond blanc, et montrer votre visage complet.
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Carte d'identité</label>
+          <div class="mt-2">
+            <%= f.file_field :identity_card,
+                accept: 'image/*',
+                class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+          </div>
+          <p class="mt-2 text-sm text-gray-500">
+            Une photo claire et lisible de votre carte nationale d'identité (recto-verso). Assurez-vous que toutes les informations sont bien visibles.
+          </p>
+        </div>
+
+        <div class="pt-4">
+          <%= f.submit "Soumettre pour vérification",
+              class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
