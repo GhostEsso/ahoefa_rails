@@ -14,8 +14,24 @@
           <%= link_to "Propriétés", properties_path, 
               class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
           <% if user_signed_in? && current_user.role == 'agent' %>
-            <%= link_to "Mes annonces", my_properties_path, 
-                class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
+            <% if current_user.kyc_approved? %>
+              <%= link_to "Mes annonces", my_properties_path, 
+                  class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>
+            <% else %>
+              <%= link_to new_kyc_path, 
+                  class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700" do %>
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <% if current_user.kyc_pending? %>
+                  KYC en attente
+                <% elsif current_user.kyc_rejected? %>
+                  Soumettre KYC à nouveau
+                <% else %>
+                  Soumettre KYC
+                <% end %>
+              <% end %>
+            <% end %>
           <% end %>
           <%= link_to "Agents", agents_path, 
               class: "text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium" %>

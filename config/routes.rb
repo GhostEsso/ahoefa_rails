@@ -27,6 +27,15 @@ Rails.application.routes.draw do
       get "mes-annonces", to: "properties#my_properties", as: :my
     end
   end
+
+  # Routes pour le KYC (au singulier car c'est une ressource unique par utilisateur)
+  resource :kyc, only: [:new, :create, :show] do
+    collection do
+      get :pending
+      get :rejected
+    end
+  end
+
   resources :agents, only: [ :index, :show ]
   get "devenir-agent", to: "subscriptions#index", as: :subscriptions
   post "devenir-agent/select-plan", to: "subscriptions#select_plan", as: :select_plan_subscriptions
@@ -40,6 +49,14 @@ Rails.application.routes.draw do
       member do
         patch :block
         patch :unblock
+      end
+    end
+
+    # Routes admin pour la validation KYC
+    resources :kyc_validations, only: [:index, :show] do
+      member do
+        patch :approve
+        patch :reject
       end
     end
   end

@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :properties, dependent: :destroy
   has_one_attached :avatar
+  has_one_attached :identity_card
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -18,6 +19,19 @@ class User < ApplicationRecord
   scope :blocked, -> { where("blocked_until > ?", Time.current) }
   scope :agent, -> { where(role: "agent") }
   scope :admin, -> { where(role: "admin") }
+
+  # KYC statuses
+  enum :kyc_status, {
+    pending: 'pending',
+    submitted: 'submitted',
+    approved: 'approved',
+    rejected: 'rejected'
+  }, default: :pending
+
+  # Scopes pour le KYC
+  scope :pending_approval, -> { where(kyc_status: "submitted") }
+  scope :rejected, -> { where(kyc_status: "rejected") }
+  scope :approved, -> { where(kyc_status: "approved") }
 
   def blocked?
     blocked_until.present? && blocked_until > Time.current
@@ -45,5 +59,51 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  # KYC methods
+  def kyc_submitted?
+    kyc_status == "submitted" || kyc_status == "approved"
+  end
+
+  def kyc_approved?
+    kyc_status == "approved"
+  end
+
+  def kyc_rejected?
+    kyc_status == "rejected"
+  end
+
+  def kyc_pending?
+    kyc_status == "pending" || kyc_status == "submitted"
+  end
+
+  def submit_kyc!
+    return false unless avatar.attached? && identity_card.attached?
+    
+    update(
+      kyc_status: "submitted",
+      kyc_submitted_at: Time.current
+    )
+  end
+
+  def approve_kyc!(admin_user)
+    return false unless admin_user.admin?
+    
+    update(
+      kyc_status: "approved",
+      kyc_approved_at: Time.current,
+      approved: true
+    )
+  end
+
+  def reject_kyc!(admin_user, reason)
+    return false unless admin_user.admin?
+    
+    update(
+      kyc_status: "rejected",
+      kyc_rejection_reason: reason,
+      approved: false
+    )
   end
 end

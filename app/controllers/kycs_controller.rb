@@ -1,10 +1,9 @@
-class KycController < ApplicationController
+class KycsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_agent!, only: [:new, :create]
-  before_action :set_user, only: [:show]
+  before_action :ensure_agent!
+  before_action :redirect_if_approved, only: [:new, :create]
 
   def new
-    redirect_to root_path, notice: "Votre KYC est déjà approuvé." if current_user.kyc_approved?
   end
 
   def create
@@ -24,9 +23,15 @@ class KycController < ApplicationController
   end
 
   def show
-    unless current_user.admin? || current_user == @user
-      redirect_to root_path, alert: "Accès non autorisé."
-    end
+    redirect_to new_kyc_path unless current_user.kyc_submitted?
+  end
+
+  def pending
+    redirect_to new_kyc_path unless current_user.kyc_pending?
+  end
+
+  def rejected
+    redirect_to new_kyc_path unless current_user.kyc_rejected?
   end
 
   private
@@ -41,7 +46,9 @@ class KycController < ApplicationController
     end
   end
 
-  def set_user
-    @user = User.find(params[:id])
+  def redirect_if_approved
+    if current_user.kyc_approved?
+      redirect_to root_path, notice: "Votre KYC est déjà approuvé."
+    end
   end
 end 

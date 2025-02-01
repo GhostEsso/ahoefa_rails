@@ -1,97 +1,93 @@
-<div class="space-y-8">
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Validation KYC</h1>
+  </div>
+
   <!-- En attente de validation -->
-  <div>
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">KYC en attente de validation</h2>
-    
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h2 class="text-lg font-medium text-gray-900">En attente de validation</h2>
+      <p class="mt-1 text-sm text-gray-500">Liste des agents ayant soumis leurs documents KYC</p>
+    </div>
+
     <% if @pending_users.any? %>
-      <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="border-t border-gray-200">
         <ul role="list" class="divide-y divide-gray-200">
           <% @pending_users.each do |user| %>
-            <li>
-              <div class="px-4 py-4 sm:px-6">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center">
-                    <% if user.avatar.attached? %>
-                      <%= image_tag user.avatar, class: "h-12 w-12 rounded-full object-cover" %>
-                    <% end %>
-                    <div class="ml-4">
-                      <h3 class="text-lg font-medium text-gray-900"><%= user.full_name %></h3>
-                      <p class="text-sm text-gray-500">
-                        <% if user.kyc_submitted_at.present? %>
-                          Soumis le <%= l user.kyc_submitted_at, format: :long %>
-                        <% else %>
-                          Date de soumission non disponible
-                        <% end %>
-                      </p>
+            <li class="p-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <% if user.avatar.attached? %>
+                    <%= image_tag user.avatar, class: "h-12 w-12 rounded-full object-cover" %>
+                  <% else %>
+                    <div class="h-12 w-12 rounded-full bg-indigo-600 flex items-center justify-center">
+                      <span class="text-white font-semibold">
+                        <%= user.first_name[0] %><%= user.last_name[0] %>
+                      </span>
                     </div>
+                  <% end %>
+                  <div class="ml-4">
+                    <h3 class="text-lg font-medium text-gray-900"><%= user.full_name %></h3>
+                    <p class="text-sm text-gray-500">Soumis le <%= l user.kyc_submitted_at, format: :long %></p>
                   </div>
-                  <div class="flex space-x-2">
-                    <%= link_to "Voir les détails", admin_kyc_validation_path(user), 
-                        class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
-                    
-                    <%= button_to approve_admin_kyc_validation_path(user),
-                        method: :patch,
-                        class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700" do %>
-                      Approuver
-                    <% end %>
-                    
-                    <button data-modal-target="reject-<%= user.id %>" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
-                      Rejeter
-                    </button>
-                  </div>
+                </div>
+                <div class="flex space-x-3">
+                  <%= link_to admin_kyc_validation_path(user), class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" do %>
+                    <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Examiner
+                  <% end %>
                 </div>
               </div>
             </li>
-
-            <!-- Modal de rejet -->
-            <div id="reject-<%= user.id %>" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-              <div class="bg-white rounded-lg p-6 max-w-md w-full">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Motif du rejet</h3>
-                <%= form_with(url: reject_admin_kyc_validation_path(user), method: :patch) do |f| %>
-                  <div class="mb-4">
-                    <%= f.text_area :reason, rows: 4, 
-                        class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md",
-                        placeholder: "Veuillez indiquer la raison du rejet..." %>
-                  </div>
-                  <div class="flex justify-end space-x-3">
-                    <button type="button" 
-                            onclick="this.closest('[id^=reject-]').classList.add('hidden')"
-                            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                      Annuler
-                    </button>
-                    <%= f.submit "Confirmer le rejet",
-                        class: "px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700" %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
           <% end %>
         </ul>
       </div>
     <% else %>
-      <p class="text-gray-500">Aucune demande en attente de validation.</p>
+      <div class="px-4 py-5 sm:px-6 text-center text-gray-500">
+        Aucun KYC en attente de validation
+      </div>
     <% end %>
   </div>
 
   <!-- KYC rejetés -->
-  <div>
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">KYC rejetés</h2>
-    
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h2 class="text-lg font-medium text-gray-900">KYC rejetés</h2>
+      <p class="mt-1 text-sm text-gray-500">Liste des agents dont le KYC a été rejeté</p>
+    </div>
+
     <% if @rejected_users.any? %>
-      <div class="bg-white shadow overflow-hidden sm:rounded-md">
+      <div class="border-t border-gray-200">
         <ul role="list" class="divide-y divide-gray-200">
           <% @rejected_users.each do |user| %>
-            <li>
-              <div class="px-4 py-4 sm:px-6">
-                <div class="flex items-center justify-between">
-                  <div>
+            <li class="p-4 sm:px-6">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <% if user.avatar.attached? %>
+                    <%= image_tag user.avatar, class: "h-12 w-12 rounded-full object-cover" %>
+                  <% else %>
+                    <div class="h-12 w-12 rounded-full bg-red-600 flex items-center justify-center">
+                      <span class="text-white font-semibold">
+                        <%= user.first_name[0] %><%= user.last_name[0] %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <div class="ml-4">
                     <h3 class="text-lg font-medium text-gray-900"><%= user.full_name %></h3>
                     <p class="text-sm text-red-600">Motif : <%= user.kyc_rejection_reason %></p>
-                    <p class="text-sm text-gray-500">Rejeté le <%= l user.updated_at, format: :long %></p>
                   </div>
-                  <%= link_to "Voir les détails", admin_kyc_validation_path(user), 
-                      class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" %>
+                </div>
+                <div class="flex space-x-3">
+                  <%= link_to admin_kyc_validation_path(user), class: "inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" do %>
+                    <svg class="-ml-0.5 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Voir les détails
+                  <% end %>
                 </div>
               </div>
             </li>
@@ -99,7 +95,9 @@
         </ul>
       </div>
     <% else %>
-      <p class="text-gray-500">Aucun KYC rejeté.</p>
+      <div class="px-4 py-5 sm:px-6 text-center text-gray-500">
+        Aucun KYC rejeté
+      </div>
     <% end %>
   </div>
 </div> 

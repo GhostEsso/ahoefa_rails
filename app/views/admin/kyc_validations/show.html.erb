@@ -1,119 +1,153 @@
-<div class="max-w-3xl mx-auto py-8">
+<div class="space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900">Examen KYC</h1>
+    <%= link_to admin_kyc_validations_path, class: "inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50" do %>
+      <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour
+    <% end %>
+  </div>
+
+  <!-- Informations de l'agent -->
   <div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">
-        Détails KYC - <%= @user.full_name %>
-      </h3>
-      <p class="mt-1 max-w-2xl text-sm text-gray-500">
-        <% if @user.kyc_submitted_at.present? %>
-          Soumis le <%= l @user.kyc_submitted_at, format: :long %>
-        <% else %>
-          Date de soumission non disponible
-        <% end %>
-      </p>
+      <h2 class="text-lg font-medium text-gray-900">Informations de l'agent</h2>
+      <p class="mt-1 text-sm text-gray-500">Détails personnels et documents soumis</p>
     </div>
-
     <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-        <div class="sm:col-span-1">
+      <div class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Nom complet</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @user.full_name %></dd>
+        </div>
+
+        <div>
           <dt class="text-sm font-medium text-gray-500">Email</dt>
           <dd class="mt-1 text-sm text-gray-900"><%= @user.email %></dd>
         </div>
 
-        <div class="sm:col-span-1">
+        <div>
           <dt class="text-sm font-medium text-gray-500">Téléphone</dt>
           <dd class="mt-1 text-sm text-gray-900"><%= @user.phone_number %></dd>
         </div>
 
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Plan</dt>
-          <dd class="mt-1 text-sm text-gray-900"><%= @user.plan.capitalize %></dd>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Date de soumission</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= l @user.kyc_submitted_at, format: :long %></dd>
         </div>
-
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Statut</dt>
-          <dd class="mt-1 text-sm">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-              <%= case @user.kyc_status
-                when 'pending' then 'bg-yellow-100 text-yellow-800'
-                when 'approved' then 'bg-green-100 text-green-800'
-                when 'rejected' then 'bg-red-100 text-red-800'
-                end %>">
-              <%= @user.kyc_status.capitalize %>
-            </span>
-          </dd>
-        </div>
-
-        <div class="sm:col-span-2">
-          <dt class="text-sm font-medium text-gray-500 mb-4">Photo de profil</dt>
-          <dd class="mt-1">
-            <% if @user.avatar.attached? %>
-              <div class="aspect-w-16 aspect-h-9">
-                <%= image_tag @user.avatar, class: "object-cover rounded-lg shadow-lg" %>
-              </div>
-            <% else %>
-              <p class="text-sm text-gray-500">Aucune photo de profil fournie</p>
-            <% end %>
-          </dd>
-        </div>
-
-        <div class="sm:col-span-2">
-          <dt class="text-sm font-medium text-gray-500 mb-4">Carte d'identité</dt>
-          <dd class="mt-1">
-            <% if @user.identity_card.attached? %>
-              <div class="aspect-w-16 aspect-h-9">
-                <%= image_tag @user.identity_card, class: "object-cover rounded-lg shadow-lg" %>
-              </div>
-            <% else %>
-              <p class="text-sm text-gray-500">Aucune carte d'identité fournie</p>
-            <% end %>
-          </dd>
-        </div>
-
-        <% if @user.kyc_rejected? %>
-          <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-gray-500">Motif du rejet</dt>
-            <dd class="mt-1 text-sm text-red-600"><%= @user.kyc_rejection_reason %></dd>
-          </div>
-        <% end %>
-      </dl>
-    </div>
-
-    <% if @user.kyc_pending? %>
-      <div class="px-4 py-5 sm:px-6 bg-gray-50 flex justify-end space-x-3">
-        <%= button_to approve_admin_kyc_validation_path(@user),
-            method: :patch,
-            class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700" do %>
-          Approuver
-        <% end %>
-
-        <button data-modal-target="reject-<%= @user.id %>" 
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
-          Rejeter
-        </button>
       </div>
+    </div>
+  </div>
 
-      <!-- Modal de rejet -->
-      <div id="reject-<%= @user.id %>" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Motif du rejet</h3>
-          <%= form_with(url: reject_admin_kyc_validation_path(@user), method: :patch) do |f| %>
-            <div class="mb-4">
-              <%= f.text_area :reason, rows: 4, 
-                  class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md",
-                  placeholder: "Veuillez indiquer la raison du rejet..." %>
+  <!-- Documents -->
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <h2 class="text-lg font-medium text-gray-900">Documents soumis</h2>
+      <p class="mt-1 text-sm text-gray-500">Photo de profil et carte d'identité</p>
+    </div>
+    <div class="border-t border-gray-200">
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 p-6">
+        <!-- Photo de profil -->
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 mb-3">Photo de profil</h3>
+          <% if @user.avatar.attached? %>
+            <div class="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-100">
+              <%= image_tag @user.avatar, class: "h-full w-full object-cover" %>
             </div>
-            <div class="flex justify-end space-x-3">
-              <button type="button" 
-                      onclick="this.closest('[id^=reject-]').classList.add('hidden')"
-                      class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                Annuler
-              </button>
-              <%= f.submit "Confirmer le rejet",
-                  class: "px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700" %>
+          <% else %>
+            <div class="flex items-center justify-center h-48 bg-gray-100 rounded-lg">
+              <p class="text-gray-500">Aucune photo soumise</p>
             </div>
           <% end %>
         </div>
+
+        <!-- Carte d'identité -->
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 mb-3">Carte d'identité</h3>
+          <% if @user.identity_card.attached? %>
+            <div class="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-100">
+              <%= image_tag @user.identity_card, class: "h-full w-full object-cover" %>
+            </div>
+          <% else %>
+            <div class="flex items-center justify-center h-48 bg-gray-100 rounded-lg">
+              <p class="text-gray-500">Aucune carte d'identité soumise</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="bg-white shadow sm:rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg font-medium text-gray-900">Décision</h3>
+      <div class="mt-5 space-y-5">
+        <% if @user.kyc_status == "submitted" %>
+          <div class="flex space-x-4">
+            <%= button_to approve_admin_kyc_validation_path(@user), 
+                method: :patch,
+                class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700" do %>
+              <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Approuver le KYC
+            <% end %>
+
+            <button type="button" 
+                onclick="document.getElementById('reject-modal').classList.remove('hidden')"
+                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+              <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Rejeter le KYC
+            </button>
+          </div>
+        <% else %>
+          <div class="rounded-md bg-yellow-50 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-yellow-800">
+                  KYC déjà <%= @user.kyc_status == "approved" ? "approuvé" : "rejeté" %>
+                </h3>
+                <% if @user.kyc_status == "rejected" %>
+                  <p class="mt-2 text-sm text-yellow-700">
+                    Motif du rejet : <%= @user.kyc_rejection_reason %>
+                  </p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de rejet -->
+<div id="reject-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+  <div class="bg-white rounded-lg p-6 max-w-md w-full">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Motif du rejet</h3>
+    <%= form_with(url: reject_admin_kyc_validation_path(@user), method: :patch) do |f| %>
+      <div class="mb-4">
+        <%= f.text_area :reason, rows: 4, 
+            class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md",
+            placeholder: "Veuillez indiquer la raison du rejet..." %>
+      </div>
+      <div class="flex justify-end space-x-3">
+        <button type="button" 
+                onclick="document.getElementById('reject-modal').classList.add('hidden')"
+                class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+          Annuler
+        </button>
+        <%= f.submit "Confirmer le rejet",
+            class: "px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700" %>
       </div>
     <% end %>
   </div>
