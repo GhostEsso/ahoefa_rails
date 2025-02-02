@@ -71,7 +71,7 @@ Rails.application.routes.draw do
   get "profile/edit", to: "profiles#edit", as: :edit_profile
   patch "profile/update", to: "profiles#update", as: :update_profile
 
-  resources :account_activations, only: [:new, :create] do
-    post :resend, on: :collection
-  end
+  # resources :account_activations, only: [:new, :create] do
+  #   post :resend, on: :collection
+  # end
 end

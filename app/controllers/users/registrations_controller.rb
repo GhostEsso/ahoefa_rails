@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :phone_number])
   end
 
-  def after_sign_up_path_for(resource)
-    new_account_activation_path(email: resource.email)
-  end
+  # def after_sign_up_path_for(resource)
+  #   new_account_activation_path(email: resource.email)
+  # end
 end 

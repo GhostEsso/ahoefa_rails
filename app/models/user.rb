@@ -34,8 +34,8 @@ class User < ApplicationRecord
   scope :approved, -> { where(kyc_status: "approved") }
 
   # Callbacks
-  before_create :generate_activation_code
-  after_create :send_activation_code
+  # before_create :generate_activation_code
+  # after_create :send_activation_code
 
   def blocked?
     blocked_until.present? && blocked_until > Time.current
@@ -112,34 +112,33 @@ class User < ApplicationRecord
   end
 
   def activated?
-    activated_at.present?
+    # activated_at.present?
+    true # Retourne toujours true pour permettre l'accès direct
   end
 
-  def activate!
-    update(activated_at: Time.current)
-  end
+  # def activate!
+  #   update(activated_at: Time.current)
+  # end
 
-  def activation_code_valid?
-    activation_code_sent_at.present? && activation_code_sent_at > 30.minutes.ago
-  end
+  # def activation_code_valid?
+  #   activation_code_sent_at.present? && activation_code_sent_at > 30.minutes.ago
+  # end
 
-  def verify_activation_code(code)
-    if activation_code == code && activation_code_valid?
-      activate!
-      true
-    else
-      false
-    end
-  end
+  # def verify_activation_code(code)
+  #   if activation_code == code && activation_code_valid?
+  #     activate!
+  #     true
+  #   else
+  #     false
+  #   end
+  # end
 
-  private
+  # def generate_activation_code
+  #   self.activation_code = SecureRandom.random_number(100000..999999).to_s
+  #   self.activation_code_sent_at = Time.current
+  # end
 
-  def generate_activation_code
-    self.activation_code = SecureRandom.random_number(100000..999999).to_s
-    self.activation_code_sent_at = Time.current
-  end
-
-  def send_activation_code
-    UserMailer.activation_code(self).deliver_later
-  end
+  # def send_activation_code
+  #   UserMailer.activation_code(self).deliver_later
+  # end
 end
