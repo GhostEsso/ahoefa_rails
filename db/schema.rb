@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_29_185606) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_01_135211) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,7 +56,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_29_185606) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "transaction_type"
+    t.boolean "featured", default: false
     t.index ["user_id"], name: "index_properties_on_user_id"
+  end
+
+  create_table "saved_properties", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "property_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_saved_properties_on_property_id"
+    t.index ["user_id"], name: "index_saved_properties_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -75,6 +85,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_29_185606) do
     t.string "plan", default: "basic"
     t.datetime "blocked_until"
     t.boolean "blocked", default: false, null: false
+    t.boolean "approved", default: false
+    t.string "kyc_status", default: "pending"
+    t.text "kyc_rejection_reason"
+    t.datetime "kyc_submitted_at"
+    t.datetime "kyc_approved_at"
+    t.string "activation_code"
+    t.datetime "activation_code_sent_at"
+    t.datetime "activated_at"
+    t.index ["activation_code"], name: "index_users_on_activation_code", unique: true
     t.index ["blocked_until"], name: "index_users_on_blocked_until"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
@@ -84,4 +103,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_29_185606) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "properties", "users"
+  add_foreign_key "saved_properties", "properties"
+  add_foreign_key "saved_properties", "users"
 end

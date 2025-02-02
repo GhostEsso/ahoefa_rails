@@ -1,0 +1,20 @@
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+  <!-- Logo -->
+  <div style="text-align: center; margin-bottom: 30px;">
+    <%= image_tag attachments['logo-ahoefa.svg'].url, alt: 'Ahoefa', style: 'width: 150px; height: auto;' %>
+  </div>
+
+  <h1 style="color: #4F46E5; text-align: center; margin-bottom: 30px;">Bienvenue sur Ahoefa !</h1>
+  
+  <p style="margin-bottom: 20px;">Bonjour <%= @user.first_name %>,</p>
+  
+  <p style="margin-bottom: 20px;">Merci de vous être inscrit sur Ahoefa. Pour activer votre compte, veuillez utiliser le code suivant :</p>
+  
+  <div style="background-color: #F3F4F6; padding: 20px; text-align: center; margin: 30px 0; border-radius: 8px;">
+    <h2 style="color: #111827; font-size: 24px; letter-spacing: 2px;"><%= @activation_code %></h2>
+  </div>
+  
+  <p style="margin-bottom: 20px;">Ce code est valable pendant 30 minutes. Si vous n'avez pas créé de compte sur Ahoefa, vous pouvez ignorer cet email.</p>
+  
+  <p style="color: #6B7280; font-size: 14px; margin-top: 40px; text-align: center;">L'équipe Ahoefa</p>
+</div>

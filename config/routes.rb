@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   get "pages/home"
   devise_for :users, controllers: {
-    registrations: "registrations",
-    sessions: "sessions"
+    registrations: 'users/registrations'
   }
 
   devise_scope :user do
@@ -45,6 +44,13 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
     get "dashboard", to: "dashboard#index"
 
+    resources :users do
+      member do
+        patch :block
+        patch :unblock
+      end
+    end
+
     resources :agents do
       member do
         patch :block
@@ -64,4 +70,8 @@ Rails.application.routes.draw do
   # Route pour la modification du profil
   get "profile/edit", to: "profiles#edit", as: :edit_profile
   patch "profile/update", to: "profiles#update", as: :update_profile
+
+  resources :account_activations, only: [:new, :create] do
+    post :resend, on: :collection
+  end
 end

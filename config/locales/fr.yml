@@ -98,6 +98,44 @@ fr:
         surface: "Surface"
         bedrooms: "Chambres"
         bathrooms: "Salles de bain"
+    models:
+      user: Utilisateur
+    attributes:
+      user:
+        first_name: "Prénom"
+        last_name: "Nom"
+        email: "Email"
+        phone_number: "Numéro de téléphone"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+        current_password: "Mot de passe actuel"
+        role: "Rôle"
+        plan: "Plan"
+    errors:
+      models:
+        user:
+          attributes:
+            first_name:
+              blank: "Le prénom est obligatoire"
+            last_name:
+              blank: "Le nom est obligatoire"
+            phone_number:
+              blank: "Le numéro de téléphone est obligatoire"
+              taken: "Ce numéro de téléphone est déjà utilisé"
+            email:
+              blank: "L'email est obligatoire"
+              taken: "Cet email est déjà utilisé"
+            password:
+              blank: "Le mot de passe est obligatoire"
+              too_short: "Le mot de passe est trop court (minimum %{count} caractères)"
+            password_confirmation:
+              confirmation: "Les mots de passe ne correspondent pas"
+            role:
+              blank: "Le rôle est obligatoire"
+              inclusion: "Le rôle doit être user, agent ou admin"
+            plan:
+              blank: "Le plan est obligatoire pour un agent"
+              inclusion: "Le plan doit être basic, standard ou premium"
   property:
     types:
       house: "Maison"
@@ -106,4 +144,29 @@ fr:
       office: "Bureau"
     transaction_types:
       sale: "Vente"
-      rent: "Location" 
+      rent: "Location"
+  errors:
+    messages:
+      not_saved: "Des erreurs ont empêché l'enregistrement :"
+      blank: "ne peut pas être vide"
+      taken: "est déjà utilisé"
+      confirmation: "ne correspond pas"
+      too_short: "est trop court (minimum %{count} caractères)"
+      inclusion: "n'est pas inclus dans la liste"
+  devise:
+    shared:
+      minimum_password_length: "%{count} caractères minimum"
+    registrations:
+      user:
+        signed_up: "Bienvenue ! Vous vous êtes inscrit avec succès."
+        signed_up_but_unconfirmed: "Un message avec un lien de confirmation a été envoyé à votre adresse email."
+    sessions:
+      user:
+        signed_in: "Connexion réussie."
+        signed_out: "Déconnexion réussie."
+        already_signed_out: "Déconnexion réussie."
+    failure:
+      user:
+        not_found_in_database: "Email ou mot de passe incorrect."
+        invalid: "Email ou mot de passe incorrect."
+        unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer." 
