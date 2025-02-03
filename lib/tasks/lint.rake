@@ -11,4 +11,4 @@ namespace :lint do
 end
 
 desc "Run all linters with auto-correct"
-task lint: ["lint:fix"]
+task lint: [ "lint:fix" ]

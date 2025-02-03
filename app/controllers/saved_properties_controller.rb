@@ -27,4 +27,4 @@ class SavedPropertiesController < ApplicationController
       format.turbo_stream { render turbo_stream: turbo_stream.replace("save_button_#{@property.id}", partial: "properties/save_button", locals: { property: @property }) }
     end
   end
-end 
+end

@@ -26,7 +26,7 @@ module AhoefaRails
 
     # Configuration de la langue par défaut
     config.i18n.default_locale = :fr
-    config.i18n.available_locales = [:fr]
-    config.i18n.fallbacks = [:fr]
+    config.i18n.available_locales = [ :fr ]
+    config.i18n.fallbacks = [ :fr ]
   end
 end

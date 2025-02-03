@@ -6,7 +6,8 @@ class User < ApplicationRecord
 
   has_many :properties, dependent: :destroy
   has_one_attached :avatar
-  has_one_attached :identity_card
+  has_one_attached :identity_card_front
+  has_one_attached :identity_card_back
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -22,10 +23,10 @@ class User < ApplicationRecord
 
   # KYC statuses
   enum :kyc_status, {
-    pending: 'pending',
-    submitted: 'submitted',
-    approved: 'approved',
-    rejected: 'rejected'
+    pending: "pending",
+    submitted: "submitted",
+    approved: "approved",
+    rejected: "rejected"
   }, default: :pending
 
   # Scopes pour le KYC
@@ -83,8 +84,8 @@ class User < ApplicationRecord
   end
 
   def submit_kyc!
-    return false unless avatar.attached? && identity_card.attached?
-    
+    return false unless avatar.attached? && identity_card_front.attached? && identity_card_back.attached?
+
     update(
       kyc_status: "submitted",
       kyc_submitted_at: Time.current
@@ -93,7 +94,7 @@ class User < ApplicationRecord
 
   def approve_kyc!(admin_user)
     return false unless admin_user.admin?
-    
+
     update(
       kyc_status: "approved",
       kyc_approved_at: Time.current,
@@ -103,7 +104,7 @@ class User < ApplicationRecord
 
   def reject_kyc!(admin_user, reason)
     return false unless admin_user.admin?
-    
+
     update(
       kyc_status: "rejected",
       kyc_rejection_reason: reason,

@@ -1,12 +1,12 @@
 class Admin::UsersController < Admin::BaseController
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :block, :unblock]
+  before_action :set_user, only: [ :show, :edit, :update, :destroy, :block, :unblock ]
   USERS_PER_PAGE = 8
 
   def index
     @total_users = User.where(role: "user").count
     @total_pages = (@total_users.to_f / USERS_PER_PAGE).ceil
-    @current_page = [params[:page].to_i, 1].max
-    
+    @current_page = [ params[:page].to_i, 1 ].max
+
     @users = User.where(role: "user")
                  .includes(avatar_attachment: :blob)
                  .order(created_at: :desc)
@@ -53,4 +53,4 @@ class Admin::UsersController < Admin::BaseController
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone_number)
   end
-end 
+end

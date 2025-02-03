@@ -7,10 +7,10 @@ class UserMailer < ApplicationMailer
   def activation_code(user)
     @user = user
     @activation_code = user.activation_code
-    
+
     # Attacher le logo
-    attachments.inline['logo-ahoefa.svg'] = File.read(Rails.root.join('app/assets/images/logo-ahoefa.svg'))
-    
+    attachments.inline["logo-ahoefa.svg"] = File.read(Rails.root.join("app/assets/images/logo-ahoefa.svg"))
+
     mail(
       to: user.email,
       subject: "Code d'activation de votre compte Ahoefa"
