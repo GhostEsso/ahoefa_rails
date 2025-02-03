@@ -6,7 +6,8 @@ class User < ApplicationRecord
 
   has_many :properties, dependent: :destroy
   has_one_attached :avatar
-  has_one_attached :identity_card
+  has_one_attached :identity_card_front
+  has_one_attached :identity_card_back
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -83,7 +84,7 @@ class User < ApplicationRecord
   end
 
   def submit_kyc!
-    return false unless avatar.attached? && identity_card.attached?
+    return false unless avatar.attached? && identity_card_front.attached? && identity_card_back.attached?
     
     update(
       kyc_status: "submitted",

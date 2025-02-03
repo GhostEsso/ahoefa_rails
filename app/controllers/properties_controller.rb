@@ -1,8 +1,9 @@
 class PropertiesController < ApplicationController
-  before_action :authenticate_user!
-  before_action :ensure_agent!, except: [ :index, :show ]
-  before_action :set_property, only: [ :show, :edit, :update, :destroy ]
-  before_action :ensure_property_owner!, only: [ :edit, :update, :destroy ]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :ensure_agent!, only: [:new, :create, :edit, :update, :destroy, :my_properties]
+  before_action :ensure_kyc_approved!, only: [:new, :create, :edit, :update]
+  before_action :set_property, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_property_owner!, only: [:edit, :update, :destroy]
 
   def index
     @properties = Property.includes(:user)
@@ -114,13 +115,25 @@ class PropertiesController < ApplicationController
 
   def ensure_agent!
     unless current_user&.role == "agent"
-      redirect_to root_path, alert: "Accès réservé aux agents immobiliers."
+      redirect_to root_path, alert: "Cette section est réservée aux agents immobiliers."
+    end
+  end
+
+  def ensure_kyc_approved!
+    unless current_user.kyc_approved?
+      if current_user.kyc_pending?
+        redirect_to root_path, alert: "Veuillez patienter pendant que nous vérifions vos documents KYC. Vous pourrez créer des annonces une fois votre KYC approuvé."
+      elsif current_user.kyc_rejected?
+        redirect_to new_kyc_path, alert: "Votre KYC a été rejeté. Veuillez soumettre à nouveau vos documents."
+      else
+        redirect_to new_kyc_path, alert: "Vous devez d'abord soumettre vos documents KYC pour pouvoir gérer des annonces."
+      end
     end
   end
 
   def ensure_property_owner!
     unless @property.user == current_user
-      redirect_to root_path, alert: "Vous ne pouvez pas modifier cette annonce."
+      redirect_to root_path, alert: "Vous n'êtes pas autorisé à modifier cette annonce."
     end
   end
 end

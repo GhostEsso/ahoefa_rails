@@ -63,17 +63,36 @@
         </div>
 
         <!-- Carte d'identité -->
-        <div>
-          <h3 class="text-sm font-medium text-gray-500 mb-3">Carte d'identité</h3>
-          <% if @user.identity_card.attached? %>
-            <div class="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-100">
-              <%= image_tag @user.identity_card, class: "h-full w-full object-cover" %>
-            </div>
-          <% else %>
-            <div class="flex items-center justify-center h-48 bg-gray-100 rounded-lg">
-              <p class="text-gray-500">Aucune carte d'identité soumise</p>
-            </div>
-          <% end %>
+        <div class="space-y-4">
+          <h3 class="text-sm font-medium text-gray-500">Carte d'identité</h3>
+          
+          <!-- Recto -->
+          <div>
+            <p class="text-xs text-gray-500 mb-2">Recto</p>
+            <% if @user.identity_card_front.attached? %>
+              <div class="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-100">
+                <%= image_tag @user.identity_card_front, class: "h-full w-full object-cover" %>
+              </div>
+            <% else %>
+              <div class="flex items-center justify-center h-48 bg-gray-100 rounded-lg">
+                <p class="text-gray-500">Recto non soumis</p>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Verso -->
+          <div>
+            <p class="text-xs text-gray-500 mb-2">Verso</p>
+            <% if @user.identity_card_back.attached? %>
+              <div class="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gray-100">
+                <%= image_tag @user.identity_card_back, class: "h-full w-full object-cover" %>
+              </div>
+            <% else %>
+              <div class="flex items-center justify-center h-48 bg-gray-100 rounded-lg">
+                <p class="text-gray-500">Verso non soumis</p>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

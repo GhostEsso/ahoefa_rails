@@ -31,19 +31,37 @@
           </p>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Carte d'identité</label>
-          <div class="mt-2">
-            <%= f.file_field :identity_card,
-                accept: 'image/*',
-                class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+        <div class="border-t border-gray-200 pt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Carte d'identité</h3>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Recto de la carte d'identité</label>
+              <div class="mt-2">
+                <%= f.file_field :identity_card_front,
+                    accept: 'image/*',
+                    class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">
+                Une photo claire et lisible du recto de votre carte nationale d'identité.
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Verso de la carte d'identité</label>
+              <div class="mt-2">
+                <%= f.file_field :identity_card_back,
+                    accept: 'image/*',
+                    class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" %>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">
+                Une photo claire et lisible du verso de votre carte nationale d'identité.
+              </p>
+            </div>
           </div>
-          <p class="mt-2 text-sm text-gray-500">
-            Une photo claire et lisible de votre carte nationale d'identité (recto-verso). Assurez-vous que toutes les informations sont bien visibles.
-          </p>
         </div>
 
-        <div class="pt-4">
+        <div class="pt-6">
           <%= f.submit "Soumettre pour vérification",
               class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
         </div>
