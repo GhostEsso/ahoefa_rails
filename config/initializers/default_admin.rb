@@ -1,6 +1,6 @@
 # Création de l'administrateur par défaut
 Rails.application.config.after_initialize do
-  if Rails.env.development? && User.find_by(email: "admin@ahoefa.com").nil?
+  if (Rails.env.development? || Rails.env.production?) && User.find_by(email: "admin@ahoefa.com").nil?
     User.create!(
       email: "admin@ahoefa.com",
       password: "12345678",

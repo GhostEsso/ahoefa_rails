@@ -57,16 +57,7 @@ cities = [ 'Lomé', 'Kara', 'Sokodé', 'Kpalimé', 'Atakpamé', 'Bassar', 'Tsév
 # Types de propriétés
 property_types = [ 'house', 'apartment', 'land', 'office' ]
 
-# Photos de démonstration
-demo_photos = [
-  'https://images.unsplash.com/photo-1564013799919-ab600027ffc6',
-  'https://images.unsplash.com/photo-1576941089067-2de3c901e126',
-  'https://images.unsplash.com/photo-1598228723793-52759bba239c'
-]
-
 puts "Création des annonces..."
-
-require 'open-uri'
 
 created_agents.each do |agent|
   3.times do |i|
@@ -85,29 +76,8 @@ created_agents.each do |agent|
       surface: rand(50..500)
     )
 
-    # Ajout des photos (entre 1 et 3 selon le plan)
-    max_photos = case agent.plan
-    when 'basic' then 2
-    when 'standard' then 5
-    when 'premium' then 15
-    end
-
-    num_photos = rand(1..3) # Pour la démo, on met entre 1 et 3 photos
-    num_photos.times do |j|
-      begin
-        file = URI.open("#{demo_photos[j]}?w=1200&q=80")
-        property.photos.attach(
-          io: file,
-          filename: "property_#{property.id}_photo_#{j+1}.jpg",
-          content_type: 'image/jpeg'
-        )
-      rescue OpenURI::HTTPError => e
-        puts "Erreur lors du téléchargement de l'image #{j+1} pour la propriété #{property.id}: #{e.message}"
-      end
-    end
-
-    puts "Créé propriété #{i + 1} pour #{agent.first_name} avec #{property.photos.count} photos"
+    puts "Créé propriété #{i + 1} pour #{agent.first_name}"
   end
 end
 
-puts "Terminé ! Création de #{User.count} agents et #{Property.count} propriétés avec #{ActiveStorage::Attachment.count} photos au total."
+puts "Terminé ! Création de #{User.count} agents et #{Property.count} propriétés."
