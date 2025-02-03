@@ -6,4 +6,4 @@ class AddKycFieldsToUsers < ActiveRecord::Migration[8.0]
     add_column :users, :kyc_submitted_at, :datetime
     add_column :users, :kyc_approved_at, :datetime
   end
-end 
+end

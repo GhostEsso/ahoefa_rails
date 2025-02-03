@@ -6,7 +6,7 @@ class AccountActivationsController < ApplicationController
 
   def create
     @user = User.find_by(email: params[:email])
-    
+
     if @user&.verify_activation_code(params[:activation_code])
       redirect_to new_user_session_path, notice: "Votre compte a été activé avec succès. Vous pouvez maintenant vous connecter."
     else
@@ -17,7 +17,7 @@ class AccountActivationsController < ApplicationController
 
   def resend
     @user = User.find_by(email: params[:email])
-    
+
     if @user && !@user.activated?
       @user.send(:generate_activation_code)
       @user.save
@@ -27,4 +27,4 @@ class AccountActivationsController < ApplicationController
       redirect_to new_user_session_path, alert: "Une erreur est survenue"
     end
   end
-end 
+end

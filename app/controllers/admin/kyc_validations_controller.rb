@@ -1,6 +1,6 @@
 module Admin
   class KycValidationsController < Admin::ApplicationController
-    before_action :set_user, only: [:show, :approve, :reject]
+    before_action :set_user, only: [ :show, :approve, :reject ]
 
     def index
       @pending_users = User.pending_approval.includes(
@@ -40,4 +40,4 @@ module Admin
       @user = User.find(params[:id])
     end
   end
-end 
+end

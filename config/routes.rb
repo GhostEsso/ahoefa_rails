@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "pages/home"
   devise_for :users, controllers: {
-    registrations: 'users/registrations'
+    registrations: "users/registrations"
   }
 
   devise_scope :user do
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end
 
   # Routes pour le KYC (au singulier car c'est une ressource unique par utilisateur)
-  resource :kyc, only: [:new, :create, :show] do
+  resource :kyc, only: [ :new, :create, :show ] do
     collection do
       get :pending
       get :rejected
@@ -59,7 +59,7 @@ Rails.application.routes.draw do
     end
 
     # Routes admin pour la validation KYC
-    resources :kyc_validations, only: [:index, :show] do
+    resources :kyc_validations, only: [ :index, :show ] do
       member do
         patch :approve
         patch :reject

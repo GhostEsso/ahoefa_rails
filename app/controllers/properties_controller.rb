@@ -1,9 +1,9 @@
 class PropertiesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :ensure_agent!, only: [:new, :create, :edit, :update, :destroy, :my_properties]
-  before_action :ensure_kyc_approved!, only: [:new, :create, :edit, :update]
-  before_action :set_property, only: [:show, :edit, :update, :destroy]
-  before_action :ensure_property_owner!, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [ :index, :show ]
+  before_action :ensure_agent!, only: [ :new, :create, :edit, :update, :destroy, :my_properties ]
+  before_action :ensure_kyc_approved!, only: [ :new, :create, :edit, :update ]
+  before_action :set_property, only: [ :show, :edit, :update, :destroy ]
+  before_action :ensure_property_owner!, only: [ :edit, :update, :destroy ]
 
   def index
     @properties = Property.includes(:user)
