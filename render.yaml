@@ -1,7 +1,7 @@
 databases:
-  - name: "ahoefa"
-    databaseName: "ahoefa"
-    user: "ahoefa"
+  - name: "ahoefa_site"
+    databaseName: "ahoefa_site"
+    user: "ahoefa_site"
 
 services:
   - type: "web"
@@ -12,7 +12,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: "ahoefa"
+          name: "ahoefa_site"
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
