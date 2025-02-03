@@ -32,6 +32,7 @@ gem "jwt"
 
 # Image processing
 gem "image_processing", "~> 1.2"
+gem "cloudinary"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
