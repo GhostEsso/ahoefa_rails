@@ -1,10 +1,18 @@
 module Admin
   class KycValidationsController < Admin::ApplicationController
-    before_action :set_user, only: [:show, :approve, :reject]
+    before_action :set_user, only: [ :show, :approve, :reject ]
 
     def index
-      @pending_users = User.pending_approval.includes(avatar_attachment: :blob, identity_card_attachment: :blob)
-      @rejected_users = User.rejected.includes(avatar_attachment: :blob, identity_card_attachment: :blob)
+      @pending_users = User.pending_approval.includes(
+        avatar_attachment: :blob,
+        identity_card_front_attachment: :blob,
+        identity_card_back_attachment: :blob
+      )
+      @rejected_users = User.rejected.includes(
+        avatar_attachment: :blob,
+        identity_card_front_attachment: :blob,
+        identity_card_back_attachment: :blob
+      )
     end
 
     def show
@@ -32,4 +40,4 @@ module Admin
       @user = User.find(params[:id])
     end
   end
-end 
+end

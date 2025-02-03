@@ -3,7 +3,7 @@ module Agent
     before_action :authenticate_user!
     before_action :ensure_agent!
     before_action :ensure_kyc_approved!
-    before_action :set_property, only: [:show, :edit, :update, :destroy]
+    before_action :set_property, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @properties = current_user.properties.order(created_at: :desc)
@@ -18,9 +18,9 @@ module Agent
 
     def create
       @property = current_user.properties.build(property_params)
-      
+
       if @property.save
-        redirect_to agent_property_path(@property), notice: 'Propriété créée avec succès.'
+        redirect_to agent_property_path(@property), notice: "Propriété créée avec succès."
       else
         render :new, status: :unprocessable_entity
       end
@@ -31,7 +31,7 @@ module Agent
 
     def update
       if @property.update(property_params)
-        redirect_to agent_property_path(@property), notice: 'Propriété mise à jour avec succès.'
+        redirect_to agent_property_path(@property), notice: "Propriété mise à jour avec succès."
       else
         render :edit, status: :unprocessable_entity
       end
@@ -39,7 +39,7 @@ module Agent
 
     def destroy
       @property.destroy
-      redirect_to agent_properties_path, notice: 'Propriété supprimée avec succès.'
+      redirect_to agent_properties_path, notice: "Propriété supprimée avec succès."
     end
 
     private
@@ -69,4 +69,4 @@ module Agent
       end
     end
   end
-end 
+end
