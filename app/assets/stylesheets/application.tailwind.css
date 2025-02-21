@@ -17,6 +17,23 @@
   }
 }
 
+/* Styles pour le slider de texte */
+.text-slider-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.text-slide {
+  transition: all 0.5s ease-in-out;
+  will-change: transform, opacity;
+}
+
+.text-slide span {
+  display: block;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
 /* Styles pour le carousel */
 .property-carousel-slide {
   transition: opacity 0.3s ease-in-out;
