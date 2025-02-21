@@ -56,7 +56,10 @@
             <!-- Informations de l'agent -->
             <div class="p-6">
               <div class="flex items-center justify-between mb-3">
-                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600">
+                <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 flex items-center">
+                  <% if agent.plan == "premium" %>
+                    <%= image_tag "certified.png", class: "h-4 w-4 mr-1" %>
+                  <% end %>
                   <%= agent.full_name %>
                 </h3>
                 <!-- Badge du plan -->

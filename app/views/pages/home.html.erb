@@ -3,17 +3,17 @@
   <div class="max-w-8xl mx-auto">
     <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:w-3/5 lg:pb-28 xl:pb-32">
       <main class="mt-10 mx-auto px-4 sm:mt-12 sm:px-8 md:mt-16 lg:mt-20 lg:px-12 xl:mt-28">
-        <div class="text-center">
+        <div class="sm:text-left">
           <div id="hero-carousel" class="text-slider-container h-[500px] sm:h-[520px] md:h-[540px] max-w-4xl relative mx-auto">
             <div class="hero-slide absolute w-full opacity-0 transition-all duration-500">
               <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl xl:text-7xl">
-                <span class="block text-gray-400">Trouvez La</span>
-                <span class="block text-gray-900">Plus Appropriée</span>
-                <span class="block text-gray-400">Résidence Pour</span>
-                <span class="block text-gray-900">Vous</span>
-                <span class="block text-gray-400">Pour Vivre</span>
+                <span class="block text-gray-400">Trouvez</span>
+                <span class="block text-gray-900">La Plus</span>
+                <span class="block text-gray-400">Appropriée</span>
+                <span class="block text-gray-900">Résidence</span>
+                <span class="block text-gray-400">Pour Vous</span>
               </h1>
-              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl max-w-2xl mx-auto">
+              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl">
                 Des prix compétitifs pour tous les budgets
               </p>
             </div>
@@ -21,11 +21,12 @@
             <div class="hero-slide absolute w-full opacity-0 transition-all duration-500">
               <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl xl:text-7xl">
                 <span class="block text-gray-400">Découvrez</span>
-                <span class="block text-gray-900">Votre Maison</span>
-                <span class="block text-gray-400">De Rêve Au</span>
-                <span class="block text-gray-900">Togo</span>
+                <span class="block text-gray-900">Votre</span>
+                <span class="block text-gray-400">Maison De</span>
+                <span class="block text-gray-900">Rêve Au</span>
+                <span class="block text-gray-400">Togo</span>
               </h1>
-              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl max-w-2xl mx-auto">
+              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl">
                 Des milliers de propriétés vous attendent
               </p>
             </div>
@@ -37,24 +38,17 @@
                 <span class="block text-gray-400">Pour Votre</span>
                 <span class="block text-gray-900">Confort</span>
               </h1>
-              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl max-w-2xl mx-auto">
+              <p class="mt-6 text-lg text-gray-500 sm:text-xl md:text-2xl">
                 Des agents qualifiés à votre service
               </p>
-            </div>
-
-            <!-- Indicateurs de slide -->
-            <div id="slide-indicators" class="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 mb-4">
-              <button class="w-3 h-3 rounded-full bg-gray-300 focus:outline-none"></button>
-              <button class="w-3 h-3 rounded-full bg-gray-300 focus:outline-none"></button>
-              <button class="w-3 h-3 rounded-full bg-gray-300 focus:outline-none"></button>
             </div>
           </div>
         </div>
       </main>
     </div>
   </div>
-  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-2/5 mt-8 lg:mt-24 mr-8">
-    <%= image_tag "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3",
+  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-2/5 mt-8 lg:mt-28 mr-8 lg:mr-16">
+    <%= image_tag "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.3",
         class: "h-48 w-full object-cover sm:h-56 md:h-72 lg:w-full lg:h-96 rounded-lg shadow-xl",
         alt: "Belle maison moderne" %>
   </div>
@@ -64,7 +58,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   let currentSlide = 0;
   const slides = document.querySelectorAll('.hero-slide');
-  const indicators = document.querySelectorAll('#slide-indicators button');
   const totalSlides = slides.length;
   let slideInterval;
 
@@ -78,10 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Afficher la slide actuelle
     slides[index].style.opacity = '1';
     slides[index].style.zIndex = '1';
-    
-    // Mettre à jour les indicateurs
-    indicators.forEach(indicator => indicator.classList.replace('bg-indigo-600', 'bg-gray-300'));
-    indicators[index].classList.replace('bg-gray-300', 'bg-indigo-600');
   }
 
   function nextSlide() {
@@ -92,16 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function startAutoSlide() {
     slideInterval = setInterval(nextSlide, 5000);
   }
-
-  // Ajouter les événements click aux indicateurs
-  indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => {
-      currentSlide = index;
-      showSlide(currentSlide);
-      clearInterval(slideInterval);
-      startAutoSlide();
-    });
-  });
 
   // Initialiser le slider
   showSlide(0);
@@ -131,12 +110,12 @@ document.addEventListener('DOMContentLoaded', function() {
       </p>
     </div>
 
-    <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-12 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
       <% @premium_properties.each do |property| %>
         <%= link_to property_path(property), class: "group" do %>
-          <div class="relative bg-white rounded-lg shadow-lg overflow-hidden">
+          <div class="relative bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
             <!-- Image -->
-            <div class="relative h-64">
+            <div class="relative h-64 flex-shrink-0">
               <% if property.photos.attached? && property.photos.first.present? %>
                 <%= image_tag property.photos.first, class: "w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" %>
               <% else %>
@@ -156,12 +135,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Informations -->
-            <div class="p-6">
-              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600"><%= property.title %></h3>
+            <div class="p-6 flex-grow flex flex-col">
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600">
+                <% if property.user.plan == "premium" %>
+                  <div class="flex items-center">
+                    <%= image_tag "certified.png", class: "h-5 w-5 mr-2" %>
+                    <%= property.title %>
+                  </div>
+                <% else %>
+                  <%= property.title %>
+                <% end %>
+              </h3>
               <p class="mt-2 text-sm text-gray-500"><%= property.city %></p>
-              <div class="mt-4">
+              <div class="mt-auto">
                 <span class="text-lg font-bold text-indigo-600">
-                  <%= number_to_currency(property.price, unit: "FCFA", precision: 0, delimiter: " ") %>
+                  FCFA <%= number_with_delimiter(property.price.to_i, delimiter: " ") %>
                 </span>
                 <% if property.transaction_type == 'rent' %>
                   <span class="text-sm text-gray-500">/mois</span>
@@ -175,9 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
       <!-- Propriété Standard -->
       <% if @standard_property.present? %>
         <%= link_to property_path(@standard_property), class: "group" do %>
-          <div class="relative bg-white rounded-lg shadow-lg overflow-hidden">
+          <div class="relative bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col">
             <!-- Image -->
-            <div class="relative h-64">
+            <div class="relative h-64 flex-shrink-0">
               <% if @standard_property.photos.attached? && @standard_property.photos.first.present? %>
                 <%= image_tag @standard_property.photos.first, class: "w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" %>
               <% else %>
@@ -197,12 +185,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
 
             <!-- Informations -->
-            <div class="p-6">
-              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600"><%= @standard_property.title %></h3>
+            <div class="p-6 flex-grow flex flex-col">
+              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600">
+                <% if @standard_property.user.plan == "premium" %>
+                  <div class="flex items-center">
+                    <%= image_tag "certified.png", class: "h-5 w-5 mr-2" %>
+                    <%= @standard_property.title %>
+                  </div>
+                <% else %>
+                  <%= @standard_property.title %>
+                <% end %>
+              </h3>
               <p class="mt-2 text-sm text-gray-500"><%= @standard_property.city %></p>
-              <div class="mt-4">
+              <div class="mt-auto">
                 <span class="text-lg font-bold text-indigo-600">
-                  <%= number_to_currency(@standard_property.price, unit: "FCFA", precision: 0, delimiter: " ") %>
+                  FCFA <%= number_with_delimiter(@standard_property.price.to_i, delimiter: " ") %>
                 </span>
                 <% if @standard_property.transaction_type == 'rent' %>
                   <span class="text-sm text-gray-500">/mois</span>
@@ -218,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <%= link_to properties_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" do %>
         Voir toutes les propriétés
         <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
       <% end %>
     </div>
